@@ -1,7 +1,7 @@
 # This is Git's per-user configuration file.
 [user]
-	name = Ryan Cheong
-	email = ryan.cheongtl@gmail.com
+	name = # Name
+	email = # name@email.com
 
 [core]
 	pager = less -FRX
