@@ -1,8 +1,14 @@
 # ~/.bash_profile
 
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
+# Detect OS
+OS_TYPE="$(uname)"
+
+# Platform-specific PATH
+if [ "$OS_TYPE" = "Darwin" ]; then
+	export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+elif [ "$OS_TYPE" = "Linux" ]; then
+	export PATH="$HOME/.local/bin:$PATH"
+fi
 
 if [ -f "$HOME/.bashrc" ]; then
 	source "$HOME/.bashrc"

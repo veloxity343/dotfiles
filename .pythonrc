@@ -1,0 +1,49 @@
+# ~/.pythonrc
+# Python interactive shell startup file
+# Set via: export PYTHONSTARTUP="$HOME/.pythonrc"
+
+import sys
+import os
+
+# Enable tab completion
+try:
+    import readline
+    import rlcompleter
+    
+    # macOS uses libedit, Linux uses GNU readline
+    if 'libedit' in readline.__doc__:
+        readline.parse_and_bind("bind ^I rl_complete")
+    else:
+        readline.parse_and_bind("tab: complete")
+    
+    # History file
+    histfile = os.path.join(os.path.expanduser("~"), ".python_history")
+    try:
+        readline.read_history_file(histfile)
+        readline.set_history_length(1000)
+    except FileNotFoundError:
+        pass
+    
+    import atexit
+    atexit.register(readline.write_history_file, histfile)
+    
+except ImportError:
+    pass
+
+# Pretty printing
+try:
+    from pprint import pprint as pp
+except ImportError:
+    pass
+
+# Welcome message with useful info
+def _startup_info():
+    print(f"Python {sys.version}")
+    print(f"Interactive shell - Tab completion enabled")
+    print(f"Useful: pp() for pretty print")
+
+if sys.stdin.isatty():
+    _startup_info()
+
+# Cleanup namespace
+del sys, os, _startup_info

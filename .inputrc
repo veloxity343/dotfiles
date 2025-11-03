@@ -1,0 +1,106 @@
+# ~/.inputrc
+# Readline configuration for better shell experience
+
+# ---------------------------------------------------------
+# Completion behavior
+# ---------------------------------------------------------
+
+# Case-insensitive tab completion
+set completion-ignore-case on
+
+# Treat hyphens and underscores as equivalent for completion
+set completion-map-case on
+
+# Show all completions immediately (no double-tab needed)
+set show-all-if-ambiguous on
+
+# Append / to symlinked directories
+set mark-symlinked-directories on
+
+# Show file types with colors (like ls -F)
+set colored-stats on
+set visible-stats on
+
+# Color completion prefix differently
+set colored-completion-prefix on
+
+# Immediately show completions without bell
+set show-all-if-unmodified on
+
+# Don't ring bell on completion
+set bell-style none
+
+# ---------------------------------------------------------
+# History search
+# ---------------------------------------------------------
+
+# Up/Down arrow keys search history based on current input
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# Page up/Page down for full history navigation
+"\e[5~": history-search-backward
+"\e[6~": history-search-forward
+
+# ---------------------------------------------------------
+# Navigation & editing
+# ---------------------------------------------------------
+
+# Ctrl+Left/Right to move by word
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+
+# Alt+Left/Right as alternative word navigation
+"\e[1;3C": forward-word
+"\e[1;3D": backward-word
+
+# Ctrl+Backspace to delete word backward
+"\C-h": backward-kill-word
+
+# Ctrl+Delete to delete word forward
+"\e[3;5~": kill-word
+
+# Home and End keys
+"\e[H": beginning-of-line
+"\e[F": end-of-line
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+
+# Delete key
+"\e[3~": delete-char
+
+# ---------------------------------------------------------
+# Miscellaneous
+# ---------------------------------------------------------
+
+# Allow UTF-8 input and output
+set input-meta on
+set output-meta on
+set convert-meta off
+
+# Don't strip 8th bit from input
+set meta-flag on
+
+# Show extra file information when completing
+set mark-directories on
+
+# Single tab for partial completion
+set show-all-if-ambiguous on
+
+# Expand tilde to full path on completion
+set expand-tilde on
+
+# Don't autocomplete hidden files unless the pattern begins with '.'
+set match-hidden-files off
+
+# Show common prefix of completions
+set menu-complete-display-prefix on
+
+# Number of screen columns used to display completions
+set completion-display-width 0
+
+# Be more intelligent when autocompleting by also looking at text after cursor
+set skip-completed-text on
+
+# Enable readline to display possible completions using different colors
+set colored-stats on
