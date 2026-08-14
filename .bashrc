@@ -211,56 +211,43 @@ gs() {
 }
 
 ga() {
-	local repo_root branch msg timestamp status_output
+    local repo_root branch status_output
 
-	repo_root=$(root_dir) || {
-		echo "${RED}Not inside a Git repository.${RESET}" >&2
-		return 1
-	}
+    repo_root=$(root_dir) || {
+        echo "${RED}Not inside a Git repository.${RESET}" >&2
+        return 1
+    }
 
-	branch=$(current_branch) || {
-		echo "${RED}Failed to determine current branch.${RESET}" >&2
-		return 1
-	}
+    branch=$(current_branch) || {
+        echo "${RED}Failed to determine current branch.${RESET}" >&2
+        return 1
+    }
 
-	timestamp="$(git_timestamp)"
+    gs || {
+        echo "${RED}Failed to run git status.${RESET}" >&2
+        return 1
+    }
 
-	gs || {
-		echo "${RED}Failed to run git status.${RESET}" >&2
-		return 1
-	}
+    status_output=$(git -C "$repo_root" status --porcelain)
+    if [ -z "$status_output" ]; then
+        echo "${GREEN}Working tree clean. Nothing to commit.${RESET}"
+        return 0
+    fi
 
-	status_output=$(git -C "$repo_root" status --porcelain)
-	if [ -z "$status_output" ]; then
-		echo "${GREEN}Working tree clean. Nothing to commit.${RESET}"
-		return 0
-	fi
+    # Show diff with color
+    echo "${CYAN}Changes to be committed:${RESET}"
+    git diff --color --stat
 
-	# Show diff with color
-	echo "${CYAN}Changes to be committed:${RESET}"
-	git diff --color --stat
+    read -p "${YELLOW}Continue? (y/n): ${RESET}" confirm
+    if [[ "$confirm" != [Yy] ]]; then
+        echo "${RED}Git commit aborted.${RESET}"
+        return 1
+    fi
 
-	read -p "${YELLOW}Continue? (y/n): ${RESET}" confirm
-	if [[ "$confirm" != [Yy] ]]; then
-		echo "${RED}Git commit aborted.${RESET}"
-		return 1
-	fi
-
-	if [ $# -gt 0 ]; then
-		commit_msg="$*"
-	else
-		read -ep "${MAGENTA}Commit message: ${RESET}" commit_msg
-		if [ -z "$commit_msg" ]; then
-			commit_msg="Generic auto-update"
-		fi
-	fi
-
-	msg="$timestamp | $commit_msg"
-
-	git add -A &&
-	git commit -m "$msg" &&
-	git push origin "$branch"
-	echo "${GREEN}Pushed to '$branch' with commit: \"$msg\"${RESET}"
+    git add -A &&
+    git commit &&
+    git push origin "$branch" &&
+    echo "${GREEN}Pushed to '$branch'.${RESET}"
 }
 
 gl() {
